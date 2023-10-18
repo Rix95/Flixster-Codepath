@@ -3,7 +3,6 @@ package com.codepath.articlesearch
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codepath.articlesearch.databinding.ActivityMainBinding
@@ -21,14 +20,26 @@ fun createJson() = Json {
 }
 
 private const val TAG = "MainActivity/"
-private const val SEARCH_API_KEY = BuildConfig.API_KEY
-private const val ARTICLE_SEARCH_URL =
-    "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=${SEARCH_API_KEY}"
+
+private const val MOVIE_URL =
+    "https://api.themoviedb.org/3/discover/movie?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&page=1&start_date=2023-01-01"
+
+private const val CELEBRITY_URL =
+    "https://api.themoviedb.org/3/trending/person/day?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"
+
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var articlesRecyclerView: RecyclerView
+
+    //Variables MOVIES
+    private lateinit var moviesRecyclerView: RecyclerView
+    private lateinit var bindingMovie: ActivityMainBinding
+    private val movies = mutableListOf<Movie>()
     private lateinit var binding: ActivityMainBinding
-    private val articles = mutableListOf<Article>()
+    //Variables Celebrities
+    private lateinit var celebrityRecyclerView: RecyclerView
+    private lateinit var bindingCelebrity: ActivityMainBinding
+    private val celebrities = mutableListOf<Celebrity>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,20 +50,33 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        articlesRecyclerView = findViewById(R.id.articles)
 
-        articlesRecyclerView.layoutManager = LinearLayoutManager(this).also {
-            val dividerItemDecoration = DividerItemDecoration(this, it.orientation)
-            articlesRecyclerView.addItemDecoration(dividerItemDecoration)
-        }
+        // Set up moviesRecyclerView
+        moviesRecyclerView = binding.movies
+        val layoutManagerMovies = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        moviesRecyclerView.layoutManager = layoutManagerMovies
+        val movieAdapter = MovieAdapter(this, movies)
+        moviesRecyclerView.adapter = movieAdapter
 
-        val articleAdapter = ArticleAdapter(this, articles)
-        articlesRecyclerView.adapter = articleAdapter
+        // Set up celebrityRecyclerView
+        celebrityRecyclerView = binding.celebrities
+        val layoutManagerCelebrities = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        celebrityRecyclerView.layoutManager = layoutManagerCelebrities
+        val celebrityAdapter = CelebrityAdapter(this, celebrities)
+        celebrityRecyclerView.adapter = celebrityAdapter
 
 
 
-        val client = AsyncHttpClient()
-        client.get(ARTICLE_SEARCH_URL, object : JsonHttpResponseHandler() {
+
+
+
+
+
+
+
+
+        val clientMovie = AsyncHttpClient()
+        clientMovie.get(MOVIE_URL, object : JsonHttpResponseHandler() {
             override fun onFailure(
                 statusCode: Int,
                 headers: Headers?,
@@ -63,27 +87,62 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {
-                Log.i(TAG, "Successfully fetched articles: $json")
+                Log.i(TAG, "Successfully fetched movies: $json")
                 try {
                     // TODO: Create the parsedJSON
 
                     // TODO: Do something with the returned json (contains article information)
                     val parsedJson = createJson().decodeFromString(
-                        SearchNewsResponse.serializer(),
+                        SearchNewsResultsMovie.serializer(),
                         json.jsonObject.toString()
                     )
                     // TODO: Save the articles and reload the screen
-                    parsedJson.response?.docs?.let { list ->
-                        articles.addAll(list)
-                        articleAdapter.notifyDataSetChanged()
+                    parsedJson.results?.let { list ->
+                        movies.addAll(list)
+                        movieAdapter.notifyDataSetChanged()
                     }
                 } catch (e: JSONException) {
                     Log.e(TAG, "Exception: $e")
                 }
-
             }
 
         })
+
+        val clientCelebrity = AsyncHttpClient()
+        clientCelebrity.get(CELEBRITY_URL, object : JsonHttpResponseHandler() {
+            override fun onFailure(
+                statusCode: Int,
+                headers: Headers?,
+                response: String?,
+                throwable: Throwable?
+            ) {
+                Log.e(TAG, "Failed to fetch articles: $statusCode")
+            }
+
+            override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {
+                Log.i(TAG, "Successfully fetched celebrities: $json")
+                try {
+                    // TODO: Create the parsedJSON
+
+                    // TODO: Do something with the returned json (contains article information)
+                    val parsedJson = createJson().decodeFromString(
+                        SearchNewsResultsCelebrity.serializer(),
+                        json.jsonObject.toString()
+                    )
+                    // TODO: Save the articles and reload the screen
+                    parsedJson.results?.let { list ->
+                        celebrities.addAll(list)
+                        Log.e("cheese", celebrities.toString())
+                        celebrityAdapter.notifyDataSetChanged()
+                    }
+                } catch (e: JSONException) {
+                    Log.e(TAG, "Exception: $e")
+                }
+            }
+
+        })
+
+
 
     }
 }
