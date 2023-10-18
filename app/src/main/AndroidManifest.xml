@@ -16,7 +16,7 @@
         android:theme="@style/Theme.ArticleSearch"
         tools:targetApi="31">
         <!-- Detail Activity -->
-        <activity android:name=".DetailActivity"
+        <activity android:name=".MovieDetailActivity"
             android:exported="true" />
         <!-- Main Activity -->
         <activity

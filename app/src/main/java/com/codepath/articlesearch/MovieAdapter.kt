@@ -1,6 +1,7 @@
 package com.codepath.articlesearch
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-//const val ARTICLE_EXTRA = "ARTICLE_EXTRA"
-private const val TAG = "ArticleAdapter"
+const val MOVIE_EXTRA = "MOVIE_EXTRA"
+private const val TAG = "MovieAdapter"
 
 class MovieAdapter(private val context: Context, private val movies: List<Movie>) :
     RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
@@ -36,7 +37,7 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
 
         private val mediaImageView = itemView.findViewById<ImageView>(R.id.mediaImage)
         private val titleTextView = itemView.findViewById<TextView>(R.id.mediaTitle)
-        private val releaseDateTextView = itemView.findViewById<TextView>(R.id.mediaReleaseDate)
+
 
         init {
             itemView.setOnClickListener(this)
@@ -46,7 +47,7 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
         fun bind(movie: Movie) {
             titleTextView.text = movie.title
             //popularityTextView.text = movie.popularity
-            releaseDateTextView.text = ("Release Date: \n" + movie.releaseDate )
+            //releaseDateTextView.text = ("Release Date: \n" + movie.releaseDate )
 
             val radius = 30; // corner radius, higher value = more rounded
 
@@ -58,13 +59,12 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
         }
 
         override fun onClick(v: View?) {
-            // Get selected article
-//            val article = articles[absoluteAdapterPosition]
-//
-//            //  Navigate to Details screen and pass selected article
-//            val intent = Intent(context, DetailActivity::class.java)
-//            intent.putExtra(ARTICLE_EXTRA, article)
-//            context.startActivity(intent)
+
+            val movie = movies[absoluteAdapterPosition]
+
+            val intent = Intent(context, MovieDetailActivity::class.java)
+            intent.putExtra(MOVIE_EXTRA, movie)
+            context.startActivity(intent)
         }
     }
 

@@ -40,7 +40,6 @@
         android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:maxLines="4"
-        android:text="releaseDate"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.486"

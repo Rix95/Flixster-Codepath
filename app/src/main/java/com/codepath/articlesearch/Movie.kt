@@ -21,6 +21,10 @@ data class Movie(
     @SerialName("title")
     val title: String?,
 
+    @SerialName("overview")
+    val overview: String?,
+
+
     @SerialName("popularity")
     val popularity: String?,
 
@@ -29,5 +33,8 @@ data class Movie(
 
     @SerialName("release_date")
     val releaseDate: String?,
+
+    @SerialName("original_language")
+    val originalLanguage: String?,
 
 ) : java.io.Serializable

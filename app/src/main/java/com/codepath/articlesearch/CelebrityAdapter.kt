@@ -1,6 +1,8 @@
 package com.codepath.articlesearch
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
+const val CELEBRITY_EXTRA = "CELEBRITY_EXTRA"
+private const val TAG = "CelebrityAdapter"
 class CelebrityAdapter(private val context: Context, private val celebrities: List<Celebrity>) :
     RecyclerView.Adapter<CelebrityAdapter.ViewHolder>() {
 
@@ -32,7 +37,6 @@ class CelebrityAdapter(private val context: Context, private val celebrities: Li
 
         private val mediaActorImage = itemView.findViewById<ImageView>(R.id.mediaPersonUrl)
         private val nameTextView = itemView.findViewById<TextView>(R.id.mediaName)
-        private val popularityTextView = itemView.findViewById<TextView>(R.id.mediaPopularity)
 
         init {
             itemView.setOnClickListener(this)
@@ -42,22 +46,26 @@ class CelebrityAdapter(private val context: Context, private val celebrities: Li
         fun bind(celebrity: Celebrity) {
             nameTextView.text = celebrity.name
             //popularityTextView.text = movie.popularity
-            popularityTextView.text = celebrity.popularity
+            //popularityTextView.text = celebrity.popularity
 
+
+            val radius = 30
 
             Glide.with(context)
                 .load("https://image.tmdb.org/t/p/w500"+ celebrity.imageUrl)
+                .transform(RoundedCorners(radius))
                 .into(mediaActorImage)
         }
 
         override fun onClick(v: View?) {
-            // Get selected article
-//            val article = articles[absoluteAdapterPosition]
-//
-//            //  Navigate to Details screen and pass selected article
-//            val intent = Intent(context, DetailActivity::class.java)
-//            intent.putExtra(ARTICLE_EXTRA, article)
-//            context.startActivity(intent)
+            val celebrity = celebrities[absoluteAdapterPosition]
+            val intent = Intent(context, CelebrityDetailActivity::class.java)
+
+
+            intent.putExtra(CELEBRITY_EXTRA, celebrity)
+
+            context.startActivity(intent)
+
         }
     }
 

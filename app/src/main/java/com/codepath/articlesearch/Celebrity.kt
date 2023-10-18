@@ -30,4 +30,7 @@ data class Celebrity(
     @SerialName("known_for_department")
     val knownFor: String?,
 
+    @SerialName("gender")
+    val gender: String?,
+
     ) : java.io.Serializable
