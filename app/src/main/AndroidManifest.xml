@@ -18,6 +18,10 @@
         <!-- Detail Activity -->
         <activity android:name=".MovieDetailActivity"
             android:exported="true" />
+
+        <!-- Detail Activity -->
+        <activity android:name=".CelebrityDetailActivity"
+            android:exported="true" />
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"

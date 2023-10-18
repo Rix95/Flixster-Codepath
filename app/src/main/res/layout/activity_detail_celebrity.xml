@@ -48,8 +48,8 @@
 
     <TextView
         android:id="@+id/mediaActorPopularity"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="369dp"
+        android:layout_height="25dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
@@ -57,19 +57,20 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mediaKnownFor" />
 
     <TextView
         android:id="@+id/mediaGender"
-        android:layout_width="349dp"
-        android:layout_height="29dp"
+        android:layout_width="245dp"
+        android:layout_height="20dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="488dp"
-        android:text="Gender"
+        android:text="Popularity"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.161"
+        app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mediaActorPopularity"
         app:layout_constraintVertical_bias="0.0" />

@@ -41,7 +41,8 @@ class CelebrityDetailActivity : AppCompatActivity() {
         } else {
             "Unknown Gender"
         }
-        genderTextView.text = genderResult
+        Log.e("GENDER", genderResult)
+        genderTextView.text = "Gender: " + genderResult
 
 
         // TODO: Load the media image
